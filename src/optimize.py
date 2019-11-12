@@ -7,7 +7,8 @@ from utils import get_img
 
 STYLE_LAYERS = ('relu1_1', 'relu2_1', 'relu3_1', 'relu4_1', 'relu5_1')
 CONTENT_LAYER = 'relu4_2'
-DEVICES = 'CUDA_VISIBLE_DEVICES'
+# DEVICES = 'CUDA_VISIBLE_DEVICES'
+DEVICES = '/gpu:0'
 
 # np arr, np arr
 def optimize(content_targets, style_target, content_weight, style_weight,
@@ -133,7 +134,8 @@ def optimize(content_targets, style_target, content_weight, style_weight,
                     if slow:
                        _preds = vgg.unprocess(_preds)
                     else:
-                       saver = tf.train.Saver()
+                       # saver = tf.train.Saver()
+                       saver = tf.train.Saver(write_version=tf.train.SaverDef.V1)
                        res = saver.save(sess, save_path)
                     yield(_preds, losses, iterations, epoch)
 
