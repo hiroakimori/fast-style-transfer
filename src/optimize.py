@@ -29,8 +29,8 @@ def optimize(content_targets, style_target, content_weight, style_weight,
     print(style_shape)
 
     # precompute style features
-    with tf.Graph().as_default(), tf.device('/cpu:0'), tf.Session() as sess:
-        style_image = tf.placeholder(tf.float32, shape=style_shape, name='style_image')
+    with tf.Graph().as_default(), tf.device('/cpu:0'), tf.compat.v1.Session() as sess:
+        style_image = tf.compat.v1.placeholder(tf.float32, shape=style_shape, name='style_image')
         style_image_pre = vgg.preprocess(style_image)
         net = vgg.net(vgg_path, style_image_pre)
         style_pre = np.array([style_target])
@@ -89,8 +89,8 @@ def optimize(content_targets, style_target, content_weight, style_weight,
         loss = content_loss + style_loss + tv_loss
 
         # overall loss
-        train_step = tf.train.AdamOptimizer(learning_rate).minimize(loss)
-        sess.run(tf.global_variables_initializer())
+        train_step = tf.compat.v1.train.AdamOptimizer(learning_rate).minimize(loss)
+        sess.run(tf.compat.v1.global_variables_initializer())
         import random
         uid = random.randint(1, 100)
         print("UID: %s" % uid)
@@ -135,7 +135,7 @@ def optimize(content_targets, style_target, content_weight, style_weight,
                        _preds = vgg.unprocess(_preds)
                     else:
                        # saver = tf.train.Saver()
-                       saver = tf.train.Saver(write_version=tf.train.SaverDef.V1)
+                       saver = tf.compat.v1.train.Saver(write_version=tf.train.SaverDef.V2)
                        res = saver.save(sess, save_path)
                     yield(_preds, losses, iterations, epoch)
 
