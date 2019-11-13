@@ -135,7 +135,7 @@ def optimize(content_targets, style_target, content_weight, style_weight,
                        _preds = vgg.unprocess(_preds)
                     else:
                        # saver = tf.train.Saver()
-                       saver = tf.compat.v1.train.Saver(write_version=tf.train.SaverDef.V2)
+                       saver = tf.compat.v1.train.Saver(write_version=tf.compat.v1.train.Saver.V2)
                        res = saver.save(sess, save_path)
                     yield(_preds, losses, iterations, epoch)
 
